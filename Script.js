@@ -7,8 +7,6 @@ $(document).ready(function () {
     var dayHours = 24;
     var blockContainerEl = $(".container");
 
-
-
     for (; i < dayHours; i++) {
 
         var timeBlock = $("<div>").addClass("row");
