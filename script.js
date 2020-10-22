@@ -1,74 +1,67 @@
 $(document).ready(function () {
-//create currentday and time
-var currentDay = moment().format('dddd, MMMM Do');
-$("#currentDay").append(currentDay);
-
-var i = 0;
-var dayHours = 24;
-var blockContainerEl = $(".container");
-
-createTimeBlocks();
-function createTimeBlocks() {
+    //create currentday and time
+    var currentDay = moment().format('dddd, MMMM Do');
+    $("#currentDay").append(currentDay);
+    var i = 0;
+    var businessHours = 10;
+    var blockContainerEl = $(".container");
     var nowHour = moment().format('h A');
     console.log(nowHour);
+    var dayHour = moment().hour();
 
-    // added 1 because of the nowHour which was included with fromNow statement
-    // var pastHours = moment().startOf('day').add(1, 'hour').fromNow('h');
-    // console.log(pastHours);
-    // subtracted 1 because of the nowHour which was included with fromNow statement
-    // var laterHours = moment().endOf('day').subtract(1, 'hour').fromNow('h');
-    // console.log(laterHours);
 
-    for (; i < dayHours; i++) {
-
+    console.log(dayHour);
+    for (; i < businessHours; i++) {
+        var eachHour = moment().startOf('day').hour(i + 8).format('h A');
+        console.log(eachHour);
         var timeBlock = $("<div>").addClass("row");
+        var hour = $("<h5>").addClass("hour col-md-2").attr("value", [eachHour]);
+        hour.append("<br>" + eachHour);
 
-        var dayHour = moment().startOf('day').add(i, 'hour').format('h A');
-        console.log(dayHour);
-        var everyHour = $("<h5>").addClass("hour col-md-2");
-
-        everyHour.append("<br>" + dayHour);
         var inputEl = $("<input>").addClass("description col-md-8");
-        inputEl.textContent = "";
-        if (nowHour === dayHour) {
+        nowHour = dayHour;
+
+        if (eachHour === nowHour) {
             inputEl.addClass("present");
         }
-        else if (dayHour < nowHour) {
+        else if (eachHour < nowHour) {
+            console.log("yes");
             inputEl.addClass("past");
         }
-        else if (dayHour > nowHour) {
+        else if (eachHour > nowHour){
+
             inputEl.addClass("future");
         }
+
+
 
         var saveBtn = $("<button>").addClass("saveBtn saveBtn,i:hover col-md-2");
         var Icon = $("<i>").addClass("fas fa-save");
         saveBtn.append(Icon);
-        timeBlock.append(everyHour, inputEl, saveBtn);
+        timeBlock.append(hour, inputEl, saveBtn);
         blockContainerEl.append(timeBlock);
 
     }
-}
 
-$(".saveBtn").on("click",function (event) {
-    event.preventDefault();
-    var textInput = inputEl.value;
-
-    localStorage.setItem("description", textInput);
-
-    textInput = localStorage.getItem("description");
-    if (!textInput) {
-        return;
+    function getInput() {
+        var savedInput = localStorage.getItem("description");
+        inputEl.HTML(savedInput);
     }
-    inputEl.textContent = textInput;
-   
+
+
+    $(".saveBtn").on("click", function showInput(event) {
+        event.preventDefault();
+        var textInput = inputEl.value;
+        if (!textInput) {
+            return;
+        }
+        localStorage.setItem("description", textInput);
+        getInput();
+    });
+
+
 });
 
 
 
 
-
-
-
-
-
-});
