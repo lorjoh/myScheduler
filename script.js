@@ -4,7 +4,7 @@ $(document).ready(function () {
     $("#currentDay").append(currentDay);
     var i = 0;
     var j = 1;
-    var businessHours = 24;
+    var businessHours = 10;
     var blockContainerEl = $(".container");
     var nowHour = moment().hour();
     console.log(nowHour);
@@ -16,7 +16,7 @@ $(document).ready(function () {
 
     for (; i < businessHours; i++) {
 
-        var eachHour = moment().startOf('day').hour(i).hour();
+        var eachHour = moment().startOf('day').hour(i+8).hour();
         console.log(eachHour);
         var timeBlock = $("<div>").addClass("row").attr("value", i);
         var hour = $("<h5>").addClass("hour col-md-2");
